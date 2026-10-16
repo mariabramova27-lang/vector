@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конспект · ВЕКТОРЫ · Мягкая математика</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#0F1A2E;
+    --teal:#2AB7A9;
+    --gold:#F4A261;
+    --white:#FFFFFF;
+    --soft:#f6f9fb;
+    --line:rgba(15,26,46,.12);
+    --purple:#7c5cff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:28px 16px 130px;
+    font-family:'Open Sans', system-ui, sans-serif;
+    background:var(--soft);
+    color:var(--dark);
+    line-height:1.62;
+    font-size:15px;
+  }
+  .page{
+    max-width:920px; margin:0 auto;
+    background:#fff; border-radius:18px;
+    padding:34px 38px 46px;
+    box-shadow:0 12px 40px rgba(15,26,46,.08);
+  }
+  h1,h2,h3,h4{font-family:'Montserrat',sans-serif; margin:0 0 .5em; line-height:1.25;}
+  h1{font-size:28px; font-weight:800; letter-spacing:.2px;}
+  h2{font-size:21px; font-weight:700; color:var(--dark);
+     padding:8px 0 8px 14px; border-left:5px solid var(--teal);
+     margin-top:44px; background:linear-gradient(90deg,rgba(42,183,169,.08),transparent);}
+  h2 .num{
+    display:inline-block; min-width:30px; text-align:center;
+    background:var(--teal); color:#fff; border-radius:8px;
+    font-size:14px; padding:3px 9px; margin-right:10px;
+  }
+  h3{font-size:17px; font-weight:700; margin-top:26px; color:#1a2b48;}
+  h3::before{content:"▸ "; color:var(--teal);}
+  h4{font-size:15px; font-weight:700; margin-top:18px; color:#2c3d55;}
+  .lead{color:#41546f; font-size:15px; margin-top:-4px;}
+  .badge{
+    display:inline-block; font-family:'Montserrat',sans-serif;
+    font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+    color:#fff; background:var(--dark); padding:5px 11px; border-radius:20px;
+    margin-bottom:14px;
+  }
+  .theory{
+    background:linear-gradient(135deg,#eef8f7,#f6fbfa);
+    border:1px solid rgba(42,183,169,.35);
+    border-left:5px solid var(--teal);
+    border-radius:12px; padding:16px 20px; margin:16px 0 20px;
+  }
+  .theory h4{
+    font-family:'Montserrat',sans-serif; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.7px; color:#1e8d82; margin-bottom:8px;
+  }
+  .example{
+    background:#fff8ee;
+    border:1px solid rgba(244,162,97,.5);
+    border-left:5px solid var(--gold);
+    border-radius:12px; padding:16px 20px; margin:16px 0 22px;
+  }
+  .example h4{
+    font-family:'Montserrat',sans-serif; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.7px; color:#b56a1f; margin-bottom:8px;
+  }
+  .univ{
+    background:linear-gradient(135deg,#f3f0ff,#faf8ff);
+    border:1px solid rgba(124,92,255,.35);
+    border-left:5px solid var(--purple);
+    border-radius:12px; padding:16px 20px; margin:16px 0 22px;
+  }
+  .univ h4{
+    font-family:'Montserrat',sans-serif; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.7px; color:#5a3fe0; margin-bottom:8px;
+  }
+  .ege{
+    background:linear-gradient(135deg,#eaf3ff,#f6faff);
+    border:1px solid rgba(58,120,220,.35);
+    border-left:5px solid #3a78dc;
+    border-radius:12px; padding:16px 20px; margin:16px 0 22px;
+  }
+  .ege h4{
+    font-family:'Montserrat',sans-serif; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.7px; color:#1f56b5; margin-bottom:8px;
+  }
+  .formula{
+    display:block; text-align:center; font-family:'Montserrat',sans-serif;
+    font-size:16px; font-weight:600; margin:12px 0;
+    padding:10px 14px; background:#fff;
+    border:1px dashed rgba(42,183,169,.5); border-radius:10px;
+  }
+  .formula small{display:block; font-family:'Open Sans',sans-serif; font-weight:400; font-size:12px; color:#5a6b82; margin-top:3px;}
+
+  /* ====== ВЕКТОРНАЯ НОТАЦИЯ: СТРЕЛКА НАД БУКВОЙ ====== */
+  .vec{
+    position: relative;
+    display: inline-block;
+    font-style: italic;
+    padding: 0 2px;
+    white-space: nowrap;
+  }
+  .vec::before{
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 1px;
+    right: 3px;
+    height: 0.42em;
+    margin-bottom: -0.12em;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'><line x1='1' y1='13' x2='78' y2='13' stroke='%230F1A2E' stroke-width='3.2' stroke-linecap='round'/><polygon points='76,4 100,13 76,22' fill='%230F1A2E'/></svg>");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+
+  .note{
+    background:#f4fbfa; border-left:3px solid var(--teal);
+    border-radius:0 8px 8px 0; padding:10px 14px; margin:12px 0;
+    font-size:14px; color:#2c3d55;
+  }
+  ul,ol{padding-left:22px; margin:8px 0;}
+  li{margin:4px 0;}
+  table{
+    width:100%; border-collapse:collapse; margin:14px 0;
+    font-size:14px; border-radius:10px; overflow:hidden;
+  }
+  th{background:var(--dark); color:#fff; padding:9px 12px; text-align:left; font-family:'Montserrat',sans-serif; font-size:13px;}
+  td{padding:9px 12px; border-bottom:1px solid var(--line);}
+  tr:nth-child(even) td{background:#f9fbfd;}
+  .toc{
+    background:#f9fbfd; border:1px solid var(--line);
+    border-radius:12px; padding:16px 22px; margin:20px 0 8px;
+  }
+  .toc h4{margin:0 0 8px; font-family:'Montserrat',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.7px; color:#41546f;}
+  .toc ol{margin:0; padding-left:20px; font-size:14px;}
+  .toc a{color:var(--dark); text-decoration:none; border-bottom:1px dotted rgba(42,183,169,.5);}
+  .toc a:hover{color:var(--teal);}
+  .print-btn{
+    position:fixed; right:20px; bottom:20px; z-index:50;
+    background:var(--gold); color:#fff; border:none;
+    font-family:'Montserrat',sans-serif; font-weight:700; font-size:14px;
+    padding:13px 20px; border-radius:14px; cursor:pointer;
+    box-shadow:0 10px 22px rgba(244,162,97,.4);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .print-btn:hover{transform:translateY(-2px);}
+
+  /* ================================================================
+     РЕКЛАМНЫЙ ФОН «МЯГКАЯ МАТЕМАТИКА» — деликатный, не мешает чтению
+     ================================================================ */
+  .mm-ads-bg{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none; /* не перехватывает клики по контенту */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 0 18px 0;
+    font-family: 'Open Sans', system-ui, sans-serif;
+    text-align: center;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  /* Водяной знак по всему фону — очень лёгкий */
+  .mm-ads-watermark{
+    position: absolute;
+    inset: -40%;
+    transform: rotate(-22deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    opacity: .055;
+    pointer-events: none;
+  }
+  .mm-ads-watermark__row{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #0F1A2E;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* Нижняя строка с активными ссылками */
+  .mm-ads-bg__inner{
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    line-height: 1.5;
+    font-size: 12px;
+    letter-spacing: .02em;
+    background: linear-gradient(180deg, rgba(15,26,46,0) 0%, rgba(15,26,46,.65) 100%);
+    color: #fff;
+    padding: 14px 22px 10px;
+    border-radius: 14px 14px 0 0;
+    opacity: .30;
+  }
+  .mm-ads-bg__line{ display: block; }
+  .mm-ads-bg__line + .mm-ads-bg__line{ margin-top: 3px; }
+  .mm-ads-bg a{
+    color: #7fe3d6;
+    text-decoration: none;
+    border-bottom: 1px dotted #7fe3d6;
+    pointer-events: auto; /* ссылки кликабельны */
+  }
+  .mm-ads-bg a:hover{ color: #F4A261; border-bottom-color: #F4A261; }
+
+  /* Основной контент — выше фона */
+  body > *:not(.mm-ads-bg){ position: relative; z-index: 1; }
+
+  @media(max-width:640px){
+    .page{padding:22px 18px 34px;}
+    h1{font-size:22px;} h2{font-size:18px;} h3{font-size:15.5px;}
+    table{font-size:13px;}
+    .vec::before{height:0.36em; margin-bottom:-0.1em;}
+    .mm-ads-watermark__row{font-size:24px;}
+    .mm-ads-bg__inner{font-size:10.5px; padding:10px 14px 8px;}
+  }
+  @media print{
+    body{background:#fff; padding:0;}
+    .page{box-shadow:none; border-radius:0; padding:14px 6px;}
+    .print-btn{display:none;}
+    .mm-ads-watermark{opacity:.035;}
+    .mm-ads-bg__inner{opacity:.5;}
+    h2{page-break-after:avoid;}
+    .theory,.example,.univ,.ege{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <span class="badge">Мягкая математика · ЕГЭ на Максимум · Конспект</span>
+  <h1>ВЕКТОРЫ: от основ до аналитической геометрии</h1>
+  <p class="lead">
+    Полный маршрут: понятие и операции → координаты → скалярное, векторное и смешанное произведение →
+    прямые и плоскости в пространстве → метод координат в задачах №14, №17 ЕГЭ профиль.
+    Уровень: школа + 1 курс вуза.
+  </p>
+
+  <div class="toc">
+    <h4>Содержание</h4>
+    <ol>
+      <li><a href="#t1">Понятие вектора. Коллинеарность, сонаправленность, равенство</a></li>
+      <li><a href="#t2">Линейные операции: сложение, вычитание, умножение на число</a></li>
+      <li><a href="#t3">Координаты вектора. Длина, расстояние, середина отрезка</a></li>
+      <li><a href="#t4">Скалярное произведение: геометрия и координаты</a></li>
+      <li><a href="#t5">Векторное произведение (вуз). Площадь, нормаль, момент</a></li>
+      <li><a href="#t6">Смешанное произведение (вуз). Объём, компланарность</a></li>
+      <li><a href="#t7">Прямая и плоскость в пространстве (аналитическая геометрия)</a></li>
+      <li><a href="#t8">Расстояния и углы: формулы для задач №14</a></li>
+      <li><a href="#t9">Применение к задачам №14 и №17 ЕГЭ профиль</a></li>
+      <li><a href="#t10">Банк разобранных задач</a></li>
+    </ol>
+  </div>
+
+  <!-- ТЕМА 1 -->
+  <h2 id="t1"><span class="num">1</span>Понятие вектора</h2>
+
+  <div class="theory">
+    <h4>Определение</h4>
+    <p>
+      <b>Вектор</b> — направленный отрезок. Обозначается
+      <span class="vec">a</span>,
+      <span class="vec">AB</span> (от A к B) или <b>a</b>.
+      Характеризуется <b>длиной</b> (модулем) |<span class="vec">a</span>| и <b>направлением</b>.
+    </p>
+    <p>
+      <b>Нулевой вектор</b> <span class="vec">0</span> — длина 0, направление не определено.
+      <b>Единичный вектор</b> (орт) — длина 1.
+    </p>
+  </div>
+
+  <h3>Коллинеарность и сонаправленность</h3>
+  <ul>
+    <li><b>Коллинеарные</b> — лежат на параллельных прямых (или на одной). Обозначение:
+      <span class="vec">a</span> ∥ <span class="vec">b</span>.</li>
+    <li><b>Сонаправленные</b> — коллинеарные и одинаково направлены:
+      <span class="vec">a</span> ↑↑ <span class="vec">b</span>.</li>
+    <li><b>Противоположно направленные</b> — <span class="vec">a</span> ↑↓ <span class="vec">b</span>.</li>
+    <li><b>Неколлинеарные</b> — не лежат на параллельных прямых.</li>
+    <li><b>Равные</b> — сонаправленные и равные по длине:
+      <span class="vec">a</span> = <span class="vec">b</span>.</li>
+    <li><b>Противоположные</b> — равны по длине, противоположно направлены:
+      −<span class="vec">a</span>.</li>
+  </ul>
+
+  <div class="note">
+    <b>Критерий коллинеарности:</b> <span class="vec">a</span> ∥ <span class="vec">b</span> ⟺
+    <span class="vec">a</span> = k·<span class="vec">b</span> для некоторого числа k
+    (при <span class="vec">b</span> ≠ <span class="vec">0</span>).
+  </div>
+
+  <h3>Компланарность (3D)</h3>
+  <p>
+    Векторы <span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>
+    <b>компланарны</b>, если лежат в одной плоскости (или параллельны ей).
+    Любые два вектора компланарны.
+  </p>
+
+  <!-- ТЕМА 2 -->
+  <h2 id="t2"><span class="num">2</span>Линейные операции</h2>
+
+  <h3>Сложение</h3>
+  <ul>
+    <li><b>Правило треугольника:</b>
+      <span class="vec">AB</span> + <span class="vec">BC</span> = <span class="vec">AC</span>.</li>
+    <li><b>Правило параллелограмма:</b> из общей точки — диагональ параллелограмма.</li>
+    <li><b>Правило многоугольника:</b> сумма «цепочки» векторов = вектор из начала в конец.</li>
+  </ul>
+
+  <h3>Вычитание</h3>
+  <p>
+    <span class="vec">a</span> − <span class="vec">b</span> =
+    <span class="vec">a</span> + (−<span class="vec">b</span>).
+    Для точек: <span class="vec">AB</span> =
+    <span class="vec">OB</span> − <span class="vec">OA</span>.
+  </p>
+
+  <h3>Умножение на число</h3>
+  <p>
+    k·<span class="vec">a</span> — вектор, коллинеарный <span class="vec">a</span>, длины
+    |k|·|<span class="vec">a</span>|, сонаправленный при k &gt; 0
+    и противоположный при k &lt; 0.
+  </p>
+
+  <h3>Свойства (линейное пространство)</h3>
+  <table>
+    <tr><th>Свойство</th><th>Формула</th></tr>
+    <tr><td>Коммутативность</td><td><span class="vec">a</span> + <span class="vec">b</span> = <span class="vec">b</span> + <span class="vec">a</span></td></tr>
+    <tr><td>Ассоциативность сложения</td><td>(<span class="vec">a</span> + <span class="vec">b</span>) + <span class="vec">c</span> = <span class="vec">a</span> + (<span class="vec">b</span> + <span class="vec">c</span>)</td></tr>
+    <tr><td>Ассоциативность умножения</td><td>(kl)·<span class="vec">a</span> = k·(l·<span class="vec">a</span>)</td></tr>
+    <tr><td>Дистрибутивность по вектору</td><td>k·(<span class="vec">a</span> + <span class="vec">b</span>) = k·<span class="vec">a</span> + k·<span class="vec">b</span></td></tr>
+    <tr><td>Дистрибутивность по числу</td><td>(k + l)·<span class="vec">a</span> = k·<span class="vec">a</span> + l·<span class="vec">a</span></td></tr>
+  </table>
+
+  <h3>Разложение по базису</h3>
+  <p>
+    • На плоскости: любые 2 неколлинеарных вектора образуют базис.
+    <br>• В пространстве: любые 3 некомпланарных вектора образуют базис.
+    <br>
+    <span class="formula">
+      <span class="vec">a</span> = x·<span class="vec">e₁</span> + y·<span class="vec">e₂</span> + z·<span class="vec">e₃</span>
+      <small>коэффициенты x, y, z определены единственным образом</small>
+    </span>
+  </p>
+
+  <!-- ТЕМА 3 -->
+  <h2 id="t3"><span class="num">3</span>Координаты вектора</h2>
+
+  <div class="theory">
+    <h4>Основное</h4>
+    <p>
+      В прямоугольной системе координат (O, i, j, k):
+      <br>
+      Если A(x₁, y₁, z₁), B(x₂, y₂, z₂), то
+    </p>
+    <span class="formula">
+      <span class="vec">AB</span> = (x₂ − x₁; y₂ − y₁; z₂ − z₁)
+    </span>
+    <p><b>Длина вектора:</b></p>
+    <span class="formula">
+      |<span class="vec">a</span>| = √(x² + y² + z²)
+    </span>
+    <p><b>Расстояние между точками:</b></p>
+    <span class="formula">
+      |AB| = √((x₂−x₁)² + (y₂−y₁)² + (z₂−z₁)²)
+    </span>
+    <p><b>Середина отрезка:</b></p>
+    <span class="formula">
+      M ( (x₁+x₂)/2 ; (y₁+y₂)/2 ; (z₁+z₂)/2 )
+    </span>
+  </div>
+
+  <h3>Операции в координатах</h3>
+  <table>
+    <tr><th>Операция</th><th>Формула</th></tr>
+    <tr><td>Сложение</td><td><span class="vec">a</span> + <span class="vec">b</span> = (x₁+x₂; y₁+y₂; z₁+z₂)</td></tr>
+    <tr><td>Вычитание</td><td><span class="vec">a</span> − <span class="vec">b</span> = (x₁−x₂; y₁−y₂; z₁−z₂)</td></tr>
+    <tr><td>Умножение на число</td><td>k·<span class="vec">a</span> = (k·x; k·y; k·z)</td></tr>
+    <tr><td>Коллинеарность</td><td>x₁/x₂ = y₁/y₂ = z₁/z₂ (при x₂y₂z₂ ≠ 0)</td></tr>
+    <tr><td>Компланарность</td><td>смешанное произведение = 0</td></tr>
+  </table>
+
+  <div class="example">
+    <h4>Пример</h4>
+    <p>
+      A(1; −2; 3), B(4; 0; −1). Найти <span class="vec">AB</span>, |AB|, середину M.
+      <br>
+      <b>Решение:</b> <span class="vec">AB</span> = (3; 2; −4). |AB| = √(9+4+16) = √29.
+      M = (2,5; −1; 1).
+    </p>
+  </div>
+
+  <!-- ТЕМА 4 -->
+  <h2 id="t4"><span class="num">4</span>Скалярное произведение</h2>
+
+  <div class="theory">
+    <h4>Определение</h4>
+    <p><b>Скалярное произведение</b> векторов — число:</p>
+    <span class="formula">
+      <span class="vec">a</span> · <span class="vec">b</span> =
+      |<span class="vec">a</span>| · |<span class="vec">b</span>| · cos φ
+      <small>φ — угол между векторами</small>
+    </span>
+    <p><b>В координатах:</b></p>
+    <span class="formula">
+      <span class="vec">a</span> · <span class="vec">b</span> = x₁x₂ + y₁y₂ + z₁z₂
+    </span>
+  </div>
+
+  <h3>Следствия и формулы</h3>
+  <ul>
+    <li><b>Косинус угла между векторами:</b>
+      <span class="formula" style="margin:6px 0;">
+        cos φ = (<span class="vec">a</span> · <span class="vec">b</span>) /
+        (|<span class="vec">a</span>|·|<span class="vec">b</span>|)
+      </span>
+    </li>
+    <li><b>Угол между векторами:</b> φ = arccos( (<span class="vec">a</span>·<span class="vec">b</span>) / (|<span class="vec">a</span>||<span class="vec">b</span>|) ) ∈ [0°, 180°].</li>
+    <li><b>Перпендикулярность:</b> <span class="vec">a</span> ⊥ <span class="vec">b</span> ⟺ <span class="vec">a</span> · <span class="vec">b</span> = 0.</li>
+    <li><b>Квадрат длины:</b> <span class="vec">a</span> · <span class="vec">a</span> = |<span class="vec">a</span>|².</li>
+    <li><b>Проекция:</b> пр<sub><span class="vec">b</span></sub> <span class="vec">a</span> =
+      (<span class="vec">a</span> · <span class="vec">b</span>) / |<span class="vec">b</span>|.</li>
+  </ul>
+
+  <h3>Свойства</h3>
+  <table>
+    <tr><th>Свойство</th><th>Формула</th></tr>
+    <tr><td>Коммутативность</td><td><span class="vec">a</span> · <span class="vec">b</span> = <span class="vec">b</span> · <span class="vec">a</span></td></tr>
+    <tr><td>Дистрибутивность</td><td>(<span class="vec">a</span> + <span class="vec">b</span>) · <span class="vec">c</span> = <span class="vec">a</span> · <span class="vec">c</span> + <span class="vec">b</span> · <span class="vec">c</span></td></tr>
+    <tr><td>Однородность</td><td>(k·<span class="vec">a</span>) · <span class="vec">b</span> = k·(<span class="vec">a</span> · <span class="vec">b</span>)</td></tr>
+    <tr><td>Скалярный квадрат</td><td><span class="vec">a</span> · <span class="vec">a</span> = |<span class="vec">a</span>|² ≥ 0</td></tr>
+  </table>
+
+  <div class="example">
+    <h4>Пример</h4>
+    <p>
+      <span class="vec">a</span> = (1; 2; 2), <span class="vec">b</span> = (2; 1; 0).
+      Найти <span class="vec">a</span>·<span class="vec">b</span>,
+      |<span class="vec">a</span>|, |<span class="vec">b</span>|, cos φ, угол.
+      <br>
+      <b>Решение:</b> <span class="vec">a</span>·<span class="vec">b</span> = 2 + 2 + 0 = 4.
+      |<span class="vec">a</span>| = 3, |<span class="vec">b</span>| = √5.
+      cos φ = 4/(3√5) ≈ 0,596 ⟹ φ ≈ 53,4°.
+    </p>
+  </div>
+
+  <div class="ege">
+    <h4>Типичное применение в ЕГЭ</h4>
+    <p>
+      Задача №14 (стереометрия): найти угол между прямыми, между прямой и плоскостью,
+      доказать перпендикулярность рёбер.
+      <br>
+      Алгоритм: ввести систему координат → записать векторы направлений → применить формулу.
+    </p>
+  </div>
+
+  <!-- ТЕМА 5 -->
+  <h2 id="t5"><span class="num">5</span>Векторное произведение <span style="font-size:13px;font-weight:400;color:#7c5cff;">(вуз)</span></h2>
+
+  <div class="univ">
+    <h4>Определение и свойства</h4>
+    <p>
+      <b>Векторное произведение</b>
+      <span class="vec">a</span> × <span class="vec">b</span> — вектор
+      <span class="vec">c</span>, такой что:
+    </p>
+    <ul>
+      <li>|<span class="vec">c</span>| = |<span class="vec">a</span>|·|<span class="vec">b</span>|·sin φ — площадь параллелограмма на <span class="vec">a</span> и <span class="vec">b</span>;</li>
+      <li><span class="vec">c</span> ⊥ <span class="vec">a</span> и <span class="vec">c</span> ⊥ <span class="vec">b</span>;</li>
+      <li>тройка (<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>) правая (правило правой руки).</li>
+    </ul>
+    <p><b>В координатах</b> (через определитель):</p>
+    <span class="formula">
+      <span class="vec">a</span> × <span class="vec">b</span> =
+      ( y₁z₂ − z₁y₂ ; z₁x₂ − x₁z₂ ; x₁y₂ − y₁x₂ )
+    </span>
+    <p><b>Свойства:</b></p>
+    <ul>
+      <li><span class="vec">a</span> × <span class="vec">b</span> = −<span class="vec">b</span> × <span class="vec">a</span> (антикоммутативность);</li>
+      <li><span class="vec">a</span> × <span class="vec">a</span> = <span class="vec">0</span>;</li>
+      <li><span class="vec">a</span> × (<span class="vec">b</span> + <span class="vec">c</span>) =
+        <span class="vec">a</span> × <span class="vec">b</span> + <span class="vec">a</span> × <span class="vec">c</span>;</li>
+      <li><span class="vec">a</span> ∥ <span class="vec">b</span> ⟺
+        <span class="vec">a</span> × <span class="vec">b</span> = <span class="vec">0</span>.</li>
+    </ul>
+    <p><b>Применения:</b></p>
+    <ul>
+      <li>Площадь параллелограмма: S = |<span class="vec">a</span> × <span class="vec">b</span>|.</li>
+      <li>Площадь треугольника: S = ½|<span class="vec">a</span> × <span class="vec">b</span>|.</li>
+      <li>Вектор нормали к плоскости: <span class="vec">n</span> = <span class="vec">a</span> × <span class="vec">b</span>.</li>
+      <li>Момент силы: <span class="vec">M</span> = <span class="vec">r</span> × <span class="vec">F</span>.</li>
+    </ul>
+  </div>
+
+  <div class="example">
+    <h4>Пример</h4>
+    <p>
+      <span class="vec">a</span> = (1; 0; 0), <span class="vec">b</span> = (0; 1; 0).
+      <br>
+      <span class="vec">a</span> × <span class="vec">b</span> =
+      (0·0 − 0·1; 0·0 − 1·0; 1·1 − 0·0) = (0; 0; 1) — орт оси Oz.
+      <br>
+      Площадь параллелограмма, построенного на <span class="vec">a</span> и <span class="vec">b</span>, равна 1.
+    </p>
+  </div>
+
+  <!-- ТЕМА 6 -->
+  <h2 id="t6"><span class="num">6</span>Смешанное произведение <span style="font-size:13px;font-weight:400;color:#7c5cff;">(вуз)</span></h2>
+
+  <div class="univ">
+    <h4>Определение</h4>
+    <p>
+      <b>Смешанное произведение</b>
+      (<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>) =
+      (<span class="vec">a</span> × <span class="vec">b</span>) · <span class="vec">c</span> — число.
+      Геометрически — объём параллелепипеда со знаком.
+    </p>
+    <span class="formula">
+      (<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>) =
+      x₁(y₂z₃ − z₂y₃) − y₁(x₂z₃ − z₂x₃) + z₁(x₂y₃ − y₂x₃)
+    </span>
+    <p><b>Свойства:</b></p>
+    <ul>
+      <li>Объём параллелепипеда: V = |(<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>)|.</li>
+      <li>Объём тетраэдра: V = |(<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>)| / 6.</li>
+      <li>Компланарность: (<span class="vec">a</span>, <span class="vec">b</span>, <span class="vec">c</span>) = 0.</li>
+      <li>Циклическая перестановка не меняет знак:
+        (<span class="vec">a</span>,<span class="vec">b</span>,<span class="vec">c</span>) =
+        (<span class="vec">b</span>,<span class="vec">c</span>,<span class="vec">a</span>) =
+        (<span class="vec">c</span>,<span class="vec">a</span>,<span class="vec">b</span>).</li>
+    </ul>
+  </div>
+
+  <!-- ТЕМА 7 -->
+  <h2 id="t7"><span class="num">7</span>Прямая и плоскость в пространстве</h2>
+
+  <div class="univ">
+    <h4>Аналитическая геометрия (вуз)</h4>
+
+    <h3>Прямая на плоскости</h3>
+    <ul>
+      <li><b>Общее:</b> Ax + By + C = 0. Нормаль <span class="vec">n</span> = (A; B).</li>
+      <li><b>С угловым коэффициентом:</b> y = kx + b.</li>
+      <li><b>Через точку и направляющий вектор:</b> (x − x₀)/p = (y − y₀)/q.</li>
+      <li><b>Через две точки:</b> (x − x₁)/(x₂ − x₁) = (y − y₁)/(y₂ − y₁).</li>
+    </ul>
+
+    <h3>Плоскость в пространстве</h3>
+    <span class="formula">
+      Ax + By + Cz + D = 0
+      <small><span class="vec">n</span> = (A; B; C) — нормальный вектор</small>
+    </span>
+    <ul>
+      <li><b>Через точку и нормаль:</b> A(x−x₀) + B(y−y₀) + C(z−z₀) = 0.</li>
+      <li><b>Через три точки:</b> определитель 3×3 = 0.</li>
+      <li><b>В отрезках:</b> x/a + y/b + z/c = 1.</li>
+    </ul>
+
+    <h3>Прямая в пространстве</h3>
+    <ul>
+      <li><b>Параметрически:</b> x = x₀ + pt, y = y₀ + qt, z = z₀ + rt.</li>
+      <li><b>Канонически:</b> (x − x₀)/p = (y − y₀)/q = (z − z₀)/r.</li>
+      <li><b>Направляющий вектор:</b> <span class="vec">s</span> = (p; q; r).</li>
+    </ul>
+  </div>
+
+  <!-- ТЕМА 8 -->
+  <h2 id="t8"><span class="num">8</span>Расстояния и углы: рабочие формулы</h2>
+
+  <table>
+    <tr><th>Величина</th><th>Формула</th></tr>
+    <tr><td>Угол между прямыми</td><td>cos φ = |<span class="vec">a</span> · <span class="vec">b</span>| / (|<span class="vec">a</span>|·|<span class="vec">b</span>|)</td></tr>
+    <tr><td>Угол между прямой и плоскостью</td><td>sin φ = |<span class="vec">a</span> · <span class="vec">n</span>| / (|<span class="vec">a</span>|·|<span class="vec">n</span>|)</td></tr>
+    <tr><td>Угол между плоскостями</td><td>cos φ = |<span class="vec">n₁</span> · <span class="vec">n₂</span>| / (|<span class="vec">n₁</span>|·|<span class="vec">n₂</span>|)</td></tr>
+    <tr><td>Расстояние от точки до плоскости</td><td>d = |Ax₀ + By₀ + Cz₀ + D| / √(A²+B²+C²)</td></tr>
+    <tr><td>Расстояние от точки M₀ до прямой (через M₁ с направлением <span class="vec">s</span>)</td><td>d = |<span class="vec">M₀M₁</span> × <span class="vec">s</span>| / |<span class="vec">s</span>|</td></tr>
+    <tr><td>Расстояние между скрещивающимися прямыми</td><td>d = |(<span class="vec">M₁M₂</span>, <span class="vec">s₁</span>, <span class="vec">s₂</span>)| / |<span class="vec">s₁</span> × <span class="vec">s₂</span>|</td></tr>
+  </table>
+
+  <div class="note">
+    <b>Важно:</b> для углов берём <b>модуль</b> скалярного произведения — угол между прямыми/плоскостями
+    не превышает 90°. Для «настоящего» угла между векторами модуль не нужен.
+  </div>
+
+  <!-- ТЕМА 9 -->
+  <h2 id="t9"><span class="num">9</span>Применение к задачам №14 и №17 ЕГЭ</h2>
+
+  <div class="ege">
+    <h4>Универсальный метод координат для №14</h4>
+    <ol>
+      <li><b>Выбрать систему координат.</b> Удобно: начало — вершина прямого угла или центр основания;
+        оси — вдоль рёбер или диагоналей.</li>
+      <li><b>Записать координаты всех нужных точек.</b></li>
+      <li><b>Найти направляющие векторы</b> прямых или нормали плоскостей.</li>
+      <li><b>Применить формулу:</b>
+        <ul>
+          <li>угол между прямыми — cos через скалярное;</li>
+          <li>угол между прямой и плоскостью — sin через скалярное с нормалью;</li>
+          <li>угол между плоскостями — cos через скалярное нормалей;</li>
+          <li>расстояние — по таблице выше.</li>
+        </ul>
+      </li>
+      <li><b>Проверить чертёж</b> и записать ответ (для №14 — с обоснованием выбора координат).</li>
+    </ol>
+  </div>
+
+  <div class="example">
+    <h4>Пример из №14 (куб)</h4>
+    <p>
+      Куб ABCDA₁B₁C₁D₁ с ребром 1. Найти угол между прямой AC₁ и плоскостью ABC.
+      <br><br>
+      <b>Решение.</b>
+      Начало координат — A(0;0;0), оси вдоль рёбер:
+      B(1;0;0), C(1;1;0), D(0;1;0), C₁(1;1;1).
+      <br>
+      Направляющий вектор <span class="vec">AC₁</span> = (1; 1; 1).
+      Нормаль плоскости ABC: <span class="vec">n</span> = (0; 0; 1).
+      <br>
+      sin φ = |<span class="vec">AC₁</span> · <span class="vec">n</span>| /
+      (|<span class="vec">AC₁</span>|·|<span class="vec">n</span>|) =
+      1 / (√3 · 1) = 1/√3 ≈ 0,577.
+      <br>
+      φ = arcsin(1/√3) ≈ 35,3°.
+    </p>
+  </div>
+
+  <div class="ege">
+    <h4>№17 (планиметрия): векторный метод</h4>
+    <p>
+      В задачах на доказательство (параллельность, перпендикулярность, отношения отрезков)
+      векторный метод часто короче классического:
+    </p>
+    <ul>
+      <li>Ввести базис из двух неколлинеарных векторов (обычно стороны треугольника).</li>
+      <li>Выразить нужные векторы через базис.</li>
+      <li>Использовать критерии: коллинеарность
+        (<span class="vec">a</span> = k·<span class="vec">b</span>),
+        перпендикулярность (<span class="vec">a</span> · <span class="vec">b</span> = 0),
+        равенство длин.</li>
+    </ul>
+  </div>
+
+  <!-- ТЕМА 10 -->
+  <h2 id="t10"><span class="num">10</span>Банк разобранных задач</h2>
+
+  <div class="example">
+    <h4>Задача 1 · Базовый уровень</h4>
+    <p>
+      Даны векторы <span class="vec">a</span> = (3; −1; 2) и <span class="vec">b</span> = (−1; 4; 0).
+      Найти <span class="vec">a</span> + 2<span class="vec">b</span>,
+      |<span class="vec">a</span> + 2<span class="vec">b</span>|,
+      <span class="vec">a</span> · <span class="vec">b</span>.
+      <br><br>
+      <b>Решение.</b>
+      2<span class="vec">b</span> = (−2; 8; 0).
+      <span class="vec">a</span> + 2<span class="vec">b</span> = (1; 7; 2).
+      |<span class="vec">a</span> + 2<span class="vec">b</span>| = √(1 + 49 + 4) = √54 = 3√6.
+      <span class="vec">a</span> · <span class="vec">b</span> =
+      3·(−1) + (−1)·4 + 2·0 = −7.
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 2 · Угол между векторами</h4>
+    <p>
+      Найти угол между <span class="vec">a</span> = (1; 1; 0) и <span class="vec">b</span> = (0; 1; 1).
+      <br><br>
+      <b>Решение.</b>
+      <span class="vec">a</span> · <span class="vec">b</span> = 0 + 1 + 0 = 1.
+      |<span class="vec">a</span>| = √2, |<span class="vec">b</span>| = √2.
+      cos φ = 1/2 ⟹ φ = 60°.
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 3 · Площадь через векторное произведение</h4>
+    <p>
+      Найти площадь треугольника с вершинами A(1; 0; 0), B(0; 1; 0), C(0; 0; 1).
+      <br><br>
+      <b>Решение.</b>
+      <span class="vec">AB</span> = (−1; 1; 0),
+      <span class="vec">AC</span> = (−1; 0; 1).
+      <br>
+      <span class="vec">AB</span> × <span class="vec">AC</span> =
+      (1·1 − 0·0; 0·(−1) − (−1)·1; (−1)·0 − 1·(−1)) = (1; 1; 1).
+      <br>
+      |<span class="vec">AB</span> × <span class="vec">AC</span>| = √3.
+      S = √3 / 2.
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 4 · Объём тетраэдра</h4>
+    <p>
+      Найти объём тетраэдра ABCD, если A(0;0;0), B(1;0;0), C(0;1;0), D(0;0;1).
+      <br><br>
+      <b>Решение.</b>
+      <span class="vec">AB</span> = (1;0;0),
+      <span class="vec">AC</span> = (0;1;0),
+      <span class="vec">AD</span> = (0;0;1).
+      Смешанное произведение
+      (<span class="vec">AB</span>, <span class="vec">AC</span>, <span class="vec">AD</span>) = 1.
+      V = |1| / 6 = 1/6.
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 5 · ЕГЭ №14 (пирамида)</h4>
+    <p>
+      В правильной четырёхугольной пирамиде SABCD сторона основания AB = 2,
+      высота SO = √2 (O — центр основания). Найти угол между прямой SB и плоскостью ABC.
+      <br><br>
+      <b>Решение.</b>
+      Начало координат — O(0;0;0). Оси направим вдоль диагоналей основания:
+      A(√2; 0; 0), B(0; √2; 0), C(−√2; 0; 0), D(0; −√2; 0), S(0; 0; √2).
+      <br>
+      <i>Проверка:</i> AB = √((√2)² + (√2)²) = √(2+2) = 2 ✓
+      (диагональ основания = 2√2, половина = √2).
+      <br>
+      <span class="vec">SB</span> = B − S = (0; √2; −√2).
+      |<span class="vec">SB</span>| = √(0 + 2 + 2) = 2.
+      Нормаль плоскости ABC — <span class="vec">n</span> = (0; 0; 1).
+      <br>
+      sin φ = |<span class="vec">SB</span> · <span class="vec">n</span>| /
+      (|<span class="vec">SB</span>|·|<span class="vec">n</span>|) =
+      √2 / (2 · 1) = √2/2 ⟹ φ = 45°.
+      <br>
+      <i>Проверка через треугольник SOB:</i>
+      OB = √2 (половина диагонали), SO = √2 ⟹ tg ∠SBO = SO/OB = 1 ⟹ ∠SBO = 45°. ✓
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 6 · ЕГЭ №14 (призма, угол между плоскостями)</h4>
+    <p>
+      В правильной треугольной призме ABCA₁B₁C₁ сторона основания AB = 2,
+      боковое ребро AA₁ = 3. Найти угол между плоскостями ABC и A₁BC.
+      <br><br>
+      <b>Решение.</b>
+      Координаты: A(0;0;0), B(2;0;0), C(1;√3;0), A₁(0;0;3).
+      <br>
+      Плоскость ABC: z = 0, нормаль <span class="vec">n₁</span> = (0; 0; 1).
+      <br>
+      Плоскость A₁BC: векторы <span class="vec">BA₁</span> = (−2; 0; 3),
+      <span class="vec">BC</span> = (−1; √3; 0).
+      <br>
+      <span class="vec">n₂</span> = <span class="vec">BA₁</span> × <span class="vec">BC</span> =
+      (0·0 − 3·√3; 3·(−1) − (−2)·0; (−2)·√3 − 0·(−1)) =
+      (−3√3; −3; −2√3).
+      <br>
+      |<span class="vec">n₂</span>| = √(27 + 9 + 12) = √48 = 4√3.
+      <br>
+      cos φ = |<span class="vec">n₁</span> · <span class="vec">n₂</span>| /
+      (|<span class="vec">n₁</span>|·|<span class="vec">n₂</span>|) =
+      2√3 / (1 · 4√3) = 1/2 ⟹ φ = 60°.
+    </p>
+  </div>
+
+  <div class="example">
+    <h4>Задача 7 · №17 (векторный метод)</h4>
+    <p>
+      Точки M и N — середины сторон AB и CD параллелограмма ABCD.
+      Доказать, что <span class="vec">MN</span> ∥ <span class="vec">AD</span>
+      и MN = AD.
+      <br><br>
+      <b>Решение (векторный метод).</b>
+      Обозначим <span class="vec">AB</span> = <span class="vec">u</span>,
+      <span class="vec">AD</span> = <span class="vec">v</span>.
+      Тогда <span class="vec">DC</span> = <span class="vec">u</span>,
+      <span class="vec">MA</span> = −½<span class="vec">u</span>,
+      <span class="vec">DN</span> = ½<span class="vec">u</span>.
+      <br>
+      <span class="vec">MN</span> =
+      <span class="vec">MA</span> + <span class="vec">AD</span> + <span class="vec">DN</span> =
+      −½<span class="vec">u</span> + <span class="vec">v</span> + ½<span class="vec">u</span> =
+      <span class="vec">v</span> = <span class="vec">AD</span>.
+      <br>
+      Значит, <span class="vec">MN</span> = <span class="vec">AD</span> ⟹
+      <span class="vec">MN</span> ∥ <span class="vec">AD</span> и MN = AD. ∎
+    </p>
+  </div>
+
+  <!-- Итог -->
+  <h2><span class="num">✓</span>Итог и рефлексия</h2>
+  <div class="theory">
+    <h4>Что ты теперь умеешь</h4>
+    <ul>
+      <li>Складывать, вычитать векторы, умножать на число — геометрически и в координатах.</li>
+      <li>Находить длину, расстояние, середину, угол через скалярное произведение.</li>
+      <li>Применять векторное и смешанное произведение для площадей и объёмов.</li>
+      <li>Записывать уравнения прямых и плоскостей.</li>
+      <li>Решать задачи №14 и №17 ЕГЭ методом координат.</li>
+    </ul>
+    <p style="margin-top:12px;">
+      <b>Каждая разобранная задача — +1 кристалл в копилку Рекрута 💎</b>
+      <br>
+      <b>Ошибка — данные для роста.</b> «Пока не умею» — это шаг к «Умею».
+    </p>
+  </div>
+
+</div>
+
+<button class="print-btn" type="button" onclick="window.print()">🖨️ Печать / PDF</button>
+
+<!-- ============================================================
+     РЕКЛАМНЫЙ ФОН «МЯГКАЯ МАТЕМАТИКА»
+     Два слоя: (1) водяной знак по всему фону, (2) нижняя строка со ссылками
+     ============================================================ -->
+<div class="mm-ads-bg" aria-hidden="true">
+
+  <!-- Слой 1: водяной знак по всему фону -->
+  <div class="mm-ads-watermark">
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+    <div class="mm-ads-watermark__row">Мягкая математика · ОГЭ · ЕГЭ · Математика · Подготовка к экзаменам · Олимпиады ·</div>
+  </div>
+
+  <!-- Слой 2: нижняя строка с активными ссылками -->
+  <div class="mm-ads-bg__inner">
+    <span class="mm-ads-bg__line">
+      Подготовка к ОГЭ, ЕГЭ и другим занятиям по математике в «Мягкой математике»
+    </span>
+    <span class="mm-ads-bg__line">
+      Подписывайся на группу:
+      <a href="https://vk.com/smartskillsmaria" target="_blank" rel="noopener">vk.com/smartskillsmaria</a>
+      &nbsp;·&nbsp;
+      Записаться: Мария Абрамова →
+      <a href="https://vk.com/im/convo/-229273902?entrypoint=community_page&tab=all" target="_blank" rel="noopener">написать в VK</a>
+    </span>
+  </div>
+
+</div>
+
+</body>
+</html>
